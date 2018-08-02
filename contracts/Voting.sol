@@ -1,0 +1,135 @@
+pragma solidity ^0.4.24;
+pragma experimental ABIEncoderV2;
+
+contract Voting 
+{
+    uint public numberOfParticipants;
+    uint public numberOfEmployees;
+    address public director;
+    event connection(address conecter);
+    event nominate(address nominator);
+    event voted(address voter);
+
+    
+    address[11] public addEmployees = [  0x5d9b1F4c81ac9c4B3b644cd08C9B5f43a8fE9B3b,
+                                        0xcB431D9E3dcd4133b8d47352973828BC03d85D70,
+                                        0x7d6b1BbF3130364b99a5C4aE9E131FCfbB6aaBC3,
+                                        0x416712a6F1218C43F626559aEf908c5348130989,
+                                        0x961719A539dd93b9561cF65666Cb6Bc3563812CD,
+                                        0xa300dB82Ea63B7D168D545B6018A4A01f6c0ee92,
+                                        0xd484004e1E90176D5F5f88020758e8FB49bEd369,
+                                        0x94340fFc3853667Fd58b4d128A8c0d646b2ae92F,
+                                        0x7e503a98b1f45081B5cd917361C89b32C779830F,
+                                        0xf2840678b5236F6DF6ae352E21756d8eB0BA03da
+    ];
+    address[5] public addParticipants;
+    
+    mapping(address => results) public participants;
+    mapping(address => bool) public employees;
+    constructor () public   
+    {
+        numberOfParticipants = 0;
+        numberOfEmployees = 0;
+    }
+    
+    struct results
+    {
+        uint  numberOfVote;
+        bool  isDirector;
+    }
+    
+    function initToNull() public
+    {
+        for(uint i = 0; i<numberOfEmployees; i++)
+        {
+            employees[addEmployees[i]] = false;
+        }
+        
+        for(uint j = 0; j<numberOfParticipants; j++)
+        {
+            participants[addParticipants[j]].numberOfVote = 0;
+            participants[addParticipants[j]].isDirector = false;
+            addParticipants[j] = 0x0;
+        }
+        numberOfEmployees = 0;  
+        numberOfParticipants = 0;
+        director = 0x0;
+    }
+
+    function connectFromVoting() public
+    {
+        emit connection(msg.sender);
+        employees[msg.sender] = false;
+        numberOfEmployees++; 
+    }
+
+    function nominateTheCandidacy() public 
+    {
+        for(uint i = 0; i<numberOfParticipants; i++)
+        {
+            if(addParticipants[i] == msg.sender)
+            {
+                return;
+            }
+        }
+        addParticipants[numberOfParticipants] = msg.sender;
+        numberOfParticipants++;
+        participants[addParticipants[numberOfParticipants]].numberOfVote = 0;
+        participants[addParticipants[numberOfParticipants]].isDirector = false;
+        emit nominate(msg.sender);
+    }
+    function voteFor(address _participant) public
+    {
+        if(employees[msg.sender] == false)
+        {
+            emit voted(msg.sender);
+            participants[_participant].numberOfVote++;
+            employees[msg.sender] = true;
+        }
+    }
+    
+    function everyoneVoted() view public returns (bool)
+    {
+        for(uint i = 0; i<numberOfEmployees; i++)
+            if(employees[addEmployees[i]] == false)
+            {
+                return false;
+            }
+        return true;
+    }
+
+    function resultOfVoting() public
+    {
+        if(everyoneVoted() == true) {
+            uint maxIndex = 0;
+            director = addParticipants[maxIndex];
+            participants[addParticipants[maxIndex]].isDirector = true;
+            results max = participants[addParticipants[maxIndex]];
+            for(uint i = 1; i<numberOfParticipants; i++) 
+            {
+                if(participants[addParticipants[i]].numberOfVote > max.numberOfVote)
+                {
+                    participants[addParticipants[maxIndex]].isDirector = false;
+                    maxIndex = i;
+                    participants[addParticipants[i]].isDirector = true;
+                    director = addParticipants[i];
+                    max = participants[addParticipants[i]];
+                }
+            }      
+            for(i = 0; i<numberOfParticipants; i++)
+                if(participants[addParticipants[i]].numberOfVote == max.numberOfVote && i != maxIndex)
+                {
+                    director = 0x0;
+                    for(uint j = 0; j<numberOfEmployees; j++)
+                    {
+                        employees[addEmployees[j]] == false;
+                    }
+                    for(j = 0; j<numberOfParticipants; j++)
+                    {
+                        participants[addParticipants[j]].numberOfVote = 0;
+                        participants[addParticipants[j]].isDirector = false;
+                    }
+                }
+            }
+    }    
+}
