@@ -1,10 +1,7 @@
 # Voting
----
-## About project
----
+### About project
 _Project goal:_  сhoose a new director by the method of voting of all employees.
-## Working principle:
----
+### Working principle:
 To work with this project, you will need a MetaMask extension for browsers.
 Assume that we have a firm in which there are, for example, n employees.
 Let k employees nominated their candidacy to become the director (1 < k < n).
@@ -20,4 +17,4 @@ The next stage is the voting. To vote, you should click the __"Vote for"__ butto
 All employees should take part in the voting for the new director. To see if all the workers have voted, click on the __"Check if all vote"__ button.
 To identify a new director, click on the __"Results"__ button and then you can сlick to __"Director"__ button to see  who won in this voting.
 
-Site of my project: 
+[Site of my project:](https://denisantosh.github.io/Voting/)  
