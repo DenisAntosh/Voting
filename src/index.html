@@ -42,20 +42,20 @@
             <button class="btn btn-info btn-lg " onclick="App.initToNull(); return false;">Init contract</button>
             <br>
             <br>
-            <button class="btn btn-info btn-lg " onclick="App.nominateTheCandidacy(); return false;">Nominate the candidacy</button>
+            <button class="btn btn-info btn-lg " data-toggle="modal" data-target="#address">Vote for</button>
           </div>
           <div class="pull-right">
-            <button class="btn btn-info btn-lg " onclick="App.connectFromVoting(); return false;">Connect from voting</button>
+            <button class="btn btn-info btn-lg " onclick="App.nominateTheCandidacy(); return false;">Nominate the candidacy</button>
             <br>
             <br>
-            <button class="btn btn-info btn-lg " data-toggle="modal" data-target="#address">Vote for</button>
+            <button class="btn btn-info btn-lg " onclick="App.checkIfAllVoted(); return false;">Check if all voted</button>
           </div>
 
           <div class="center-block">
+            <button class="btn btn-info btn-lg center-block" onclick="App.connectFromVoting(); return false;">Connect from voting</button>
             <br>
-            <br>
-            <br>
-              <button class="btn btn-info btn-lg center-block" data-toggle="collapse" data-target="#events" aria-expanded="false" aria-controls="events">Events</button>
+            <button class="btn btn-info btn-lg center-block" data-toggle="collapse" data-target="#events" aria-expanded="false" aria-controls="events">Events</button>
+            
           </div>
 
         </div>

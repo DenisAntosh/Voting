@@ -16,3 +16,8 @@ body {
   display: inline;
   padding: 5px;
 }
+
+.voteFor 
+{
+  right: 100px;
+}

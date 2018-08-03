@@ -5,10 +5,16 @@ contract Voting
 {
     uint public numberOfParticipants;
     uint public numberOfEmployees;
+    
     address public director;
+    
+    mapping(address => results) public participants;
+    mapping(address => bool) public employees;
+    
     event connection(address conecter);
     event nominate(address nominator);
     event voted(address voter);
+    event allVoted(bool res);
 
     
     address[11] public addEmployees = [  0x5d9b1F4c81ac9c4B3b644cd08C9B5f43a8fE9B3b,
@@ -24,8 +30,6 @@ contract Voting
     ];
     address[5] public addParticipants;
     
-    mapping(address => results) public participants;
-    mapping(address => bool) public employees;
     constructor () public   
     {
         numberOfParticipants = 0;
@@ -45,11 +49,11 @@ contract Voting
             employees[addEmployees[i]] = false;
         }
         
-        for(uint j = 0; j<numberOfParticipants; j++)
+        for(i = 0; i<numberOfParticipants; i++)
         {
-            participants[addParticipants[j]].numberOfVote = 0;
-            participants[addParticipants[j]].isDirector = false;
-            addParticipants[j] = 0x0;
+            participants[addParticipants[i]].numberOfVote = 0;
+            participants[addParticipants[i]].isDirector = false;
+            addParticipants[i] = 0x0;
         }
         numberOfEmployees = 0;  
         numberOfParticipants = 0;
@@ -65,6 +69,7 @@ contract Voting
 
     function nominateTheCandidacy() public 
     {
+        //verify that the employee did not press the button twice
         for(uint i = 0; i<numberOfParticipants; i++)
         {
             if(addParticipants[i] == msg.sender)
@@ -72,14 +77,17 @@ contract Voting
                 return;
             }
         }
+        // put the employee in an array of participants
         addParticipants[numberOfParticipants] = msg.sender;
         numberOfParticipants++;
         participants[addParticipants[numberOfParticipants]].numberOfVote = 0;
         participants[addParticipants[numberOfParticipants]].isDirector = false;
         emit nominate(msg.sender);
     }
+    
     function voteFor(address _participant) public
     {
+        // check if the employee has not voted before
         if(employees[msg.sender] == false)
         {
             emit voted(msg.sender);
@@ -93,14 +101,18 @@ contract Voting
         for(uint i = 0; i<numberOfEmployees; i++)
             if(employees[addEmployees[i]] == false)
             {
+                emit allVoted(false);
                 return false;
             }
+        emit allVoted(true);
         return true;
     }
 
     function resultOfVoting() public
     {
-        if(everyoneVoted() == true) {
+        if(everyoneVoted() == true) 
+        {
+            // we are looking for who has the maximum number of votes
             uint maxIndex = 0;
             director = addParticipants[maxIndex];
             participants[addParticipants[maxIndex]].isDirector = true;
@@ -116,6 +128,7 @@ contract Voting
                     max = participants[addParticipants[i]];
                 }
             }      
+            //if there are participants with the same maximum number of votes, we vote again
             for(i = 0; i<numberOfParticipants; i++)
                 if(participants[addParticipants[i]].numberOfVote == max.numberOfVote && i != maxIndex)
                 {
