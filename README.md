@@ -17,4 +17,4 @@ The next stage is the voting. To vote, you should click the __"Vote for"__ butto
 All employees should take part in the voting for the new director. To see if all the workers have voted, click on the __"Check if all vote"__ button.
 To identify a new director, click on the __"Results"__ button and then you can сlick to __"Director"__ button to see  who won in this voting.
 
-[Site of my project:](https://denisantosh.github.io/Voting/)  
+[Site of my project](https://denisantosh.github.io/Voting/)  
