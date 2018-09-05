@@ -2,7 +2,7 @@
 ### About project
 _Project goal:_  сhoose a new director by the method of voting of all employees.
 ### Working principle:
-To work with this project, you will need a MetaMask extension for browsers.
+To work with this project, you need a MetaMask extension for browsers.
 Assume that we have a firm in which there are, for example, n employees.
 Let k employees nominated their candidacy to become the director (1 < k < n).
 Of these, we have to choose a director. If you want to see all the events that will be done next, click on the __"Events"__ button.
