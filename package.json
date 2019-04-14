@@ -1,9 +1,10 @@
 {
   "name": "chainskills",
   "version": "1.0.0",
-  "description": "",
+  "description": "_Project goal:_  сhoose a new director by the method of voting of all employees.\r ### Working principle:\r To work with this project, you need a MetaMask extension for browsers.\r Assume that we have a firm in which there are, for example, n employees.\r Let k employees nominated their candidacy to become the director (1 < k < n).\r Of these, we have to choose a director. If you want to see all the events that will be done next, click on the __\"Events\"__ button.",
   "main": "truffle.js",
   "directories": {
+    "doc": "docs",
     "test": "test"
   },
   "scripts": {
@@ -14,5 +15,13 @@
   "license": "ISC",
   "devDependencies": {
     "lite-server": "^2.3.0"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/DenisAntosh/Voting.git"
+  },
+  "bugs": {
+    "url": "https://github.com/DenisAntosh/Voting/issues"
+  },
+  "homepage": "https://github.com/DenisAntosh/Voting#readme"
 }
