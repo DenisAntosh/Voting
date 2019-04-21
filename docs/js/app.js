@@ -68,15 +68,15 @@ App = {
 	},
 
 	nominateTheCandidacy: function () {
-		let tx =
-			{
-				from: web3.eth.account,
-				to: url,
-				value: 0x0,
-				gas: 3000000,
-				gasPrice: web3.toWei(2, "gwei"),
-				data: App.contracts.Voting.nominateTheCandidacy.getData()
-			};
+		let tx = {
+			from: web3.eth.account,
+			to: url,
+			value: 0x0,
+			gas: 3000000,
+			gasPrice: web3.toWei(2, "gwei"),
+			data: App.contracts.Voting.nominateTheCandidacy.getData()
+		};
+
 		web3.eth.sendTransaction(tx, function (err, res) {
 			if (res) {
 				console.log("Everything went good with approval");
@@ -172,7 +172,7 @@ getDirector: function() {
 },
 
 listenToEvents: function () {
-	App.contracts.Voting.connection({}, {}).watch(function (error, event) {
+	App.contracts.Voting.Connection({}, {}).watch(function (error, event) {
 		if (!error) {
 			$("#events").append('<li class="list-group-item">' + event.args.conecter + ' connected to voting</li>');
 		} else {
@@ -180,7 +180,7 @@ listenToEvents: function () {
 		}
 	});
 
-	App.contracts.Voting.nominate({}, {}).watch(function (error, event) {
+	App.contracts.Voting.Nominate({}, {}).watch(function (error, event) {
 		if (!error) {
 			$("#events").append('<li class="list-group-item">' + event.args.nominator + ' nominated the candidacy ' + '</li>');
 		} else {
@@ -188,12 +188,12 @@ listenToEvents: function () {
 		}
 	});
 
-	App.contracts.Voting.allVoted({}, {}).watch(function (error, event) {
+	App.contracts.Voting.AllVoted({}, {}).watch(function (error, event) {
 		if (!error) {
 			if (event.args.res == true) {
 				$("#events").append('<li class="list-group-item"> All voted. ' + '</li>');
 			}
-			else {
+			else {.3
 				$("#events").append('<li class="list-group-item"> Not all voted ' + '</li>');
 			}
 			allVote = event.args.res;
@@ -202,7 +202,7 @@ listenToEvents: function () {
 		}
 	});
 
-	App.contracts.Voting.voted({}, {}).watch(function (error, event) {
+	App.contracts.Voting.Voted({}, {}).watch(function (error, event) {
 		if (!error) {
 			$("#events").append('<li class="list-group-item">' + event.args.voter + ' voted ' + '</li>');
 		} else {

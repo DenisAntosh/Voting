@@ -8,16 +8,21 @@ contract Voting
     
     address public director;
     
-    mapping(address => results) public participants;
+    mapping(address => Results) public participants;
     mapping(address => bool) public employees;
     
-    event connection(address conecter);
-    event nominate(address nominator);
-    event voted(address voter);
-    event allVoted(bool res);
+    event Connection(address conecter);
+    event Nominate(address nominator);
+    event Voted(address voter);
+    event AllVoted(bool res);
 
+    struct Results
+    {
+        uint  numberOfVote;
+        bool  isDirector;
+    }
     
-    address[11] public addEmployees = [  0x5d9b1F4c81ac9c4B3b644cd08C9B5f43a8fE9B3b,
+    address[11] public addEmployees = [ 0x5d9b1F4c81ac9c4B3b644cd08C9B5f43a8fE9B3b,
                                         0xcB431D9E3dcd4133b8d47352973828BC03d85D70,
                                         0x7d6b1BbF3130364b99a5C4aE9E131FCfbB6aaBC3,
                                         0x416712a6F1218C43F626559aEf908c5348130989,
@@ -28,18 +33,12 @@ contract Voting
                                         0x7e503a98b1f45081B5cd917361C89b32C779830F,
                                         0xf2840678b5236F6DF6ae352E21756d8eB0BA03da
     ];
-    address[5] public addParticipants;
+    address[6] public addParticipants;
     
     constructor () public   
     {
         numberOfParticipants = 0;
         numberOfEmployees = 0;
-    }
-    
-    struct results
-    {
-        uint  numberOfVote;
-        bool  isDirector;
     }
     
     function initToNull() public
@@ -62,7 +61,7 @@ contract Voting
 
     function connectFromVoting() public
     {
-        emit connection(msg.sender);
+        emit Connection(msg.sender);
         employees[msg.sender] = false;
         numberOfEmployees++; 
     }
@@ -82,7 +81,7 @@ contract Voting
         numberOfParticipants++;
         participants[addParticipants[numberOfParticipants]].numberOfVote = 0;
         participants[addParticipants[numberOfParticipants]].isDirector = false;
-        emit nominate(msg.sender);
+        emit Nominate(msg.sender);
     }
     
     function voteFor(address _participant) public
@@ -90,7 +89,7 @@ contract Voting
         // check if the employee has not voted before
         if(employees[msg.sender] == false)
         {
-            emit voted(msg.sender);
+            emit Voted(msg.sender);
             participants[_participant].numberOfVote++;
             employees[msg.sender] = true;
         }
@@ -101,7 +100,7 @@ contract Voting
         for(uint i = 0; i<numberOfEmployees; i++)
             if(employees[addEmployees[i]] == false)
             {
-                emit allVoted(false);
+                emit AllVoted(false);
                 return false;
             }
         emit allVoted(true);
@@ -110,13 +109,13 @@ contract Voting
 
     function resultOfVoting() public
     {
-        if(everyoneVoted() == true) 
+        if(everyoneVoted()) 
         {
             // we are looking for who has the maximum number of votes
             uint maxIndex = 0;
             director = addParticipants[maxIndex];
             participants[addParticipants[maxIndex]].isDirector = true;
-            results max = participants[addParticipants[maxIndex]];
+            Results max = participants[addParticipants[maxIndex]];
             for(uint i = 1; i<numberOfParticipants; i++) 
             {
                 if(participants[addParticipants[i]].numberOfVote > max.numberOfVote)
